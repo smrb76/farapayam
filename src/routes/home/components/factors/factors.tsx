@@ -6,10 +6,8 @@ type Props = {
   resetKey: number;
   warehouseId: string;
   onWarehouseChange: (v: string) => void;
-
   rows: any[];
   onRowsChange: (v: any[]) => void;
-
   selectedRow: any;
   onRowSelect: (v: any) => void;
 };

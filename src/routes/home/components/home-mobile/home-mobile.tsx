@@ -35,29 +35,18 @@ function saveLists(lists: SavedList[]) {
 }
 
 type MobileTab = "header" | "items" | "summary";
-type ToolKey = "factors" | "list";
 
 export default function HomeMobile() {
-  // ✅ factors vs list
   const [activeTool, setActiveTool] = useState<any>("factors");
   const activeTab = activeTool === "list" ? "list" : "factors";
 
-  // ✅ delete modal
   const [deleteOpen, setDeleteOpen] = useState(false);
-
-  // ✅ receiptbar reset
   const [resetKey, setResetKey] = useState(0);
-
-  // ✅ existing mobile ui states
   const [tab, setTab] = useState<MobileTab>("items");
   const [drawerOpen, setDrawerOpen] = useState(false);
-
-  // ✅ factors states
   const [warehouseId, setWarehouseId] = useState(WAREHOUSES[0].id);
   const [rows, setRows] = useState<any[]>(initialRows);
   const [selectedRow, setSelectedRow] = useState<any>(null);
-
-  // ✅ edit mode
   const [editingListId, setEditingListId] = useState<string | null>(null);
 
   const resetForm = () => {
@@ -67,10 +56,9 @@ export default function HomeMobile() {
     setEditingListId(null);
 
     setTab("items");
-    setResetKey((k) => k + 1); // ✅ ReceiptBar ریست میشه
+    setResetKey((k) => k + 1);
   };
 
-  // ✅ open an existing list and prefill Factors
   const openSavedList = useCallback((id: string) => {
     const lists = loadLists();
     const item = lists.find((x) => x.id === id);
@@ -91,7 +79,6 @@ export default function HomeMobile() {
     setTab("items");
   }, []);
 
-  // ✅ confirm = update if editingListId else create
   const handleConfirm = () => {
     const lists = loadLists();
 
@@ -139,7 +126,6 @@ export default function HomeMobile() {
     setEditingListId(payload.id);
   };
 
-  // ✅ delete flow (modal)
   const requestDelete = () => {
     if (!editingListId) {
       resetForm();
@@ -160,7 +146,6 @@ export default function HomeMobile() {
 
   const cancelDelete = () => setDeleteOpen(false);
 
-  // ✅ navigation between saved factors
   const getSortedLists = () => {
     const items = loadLists();
     return items.sort(
@@ -205,7 +190,6 @@ export default function HomeMobile() {
     if (index < items.length - 1) goToIndex(index + 1);
   };
 
-  // ✅ main content
   const content = useMemo(() => {
     if (activeTool === "list") {
       return (
@@ -222,7 +206,6 @@ export default function HomeMobile() {
             <div className="rounded border border-blue-200 bg-white">
               <div className="overflow-x-auto">
                 <div className="min-w-[980px]">
-                  {/* ✅ key برای reset */}
                   <ReceiptBar
                     key={resetKey}
                     warehouseId={warehouseId}
@@ -250,7 +233,6 @@ export default function HomeMobile() {
             <div className="rounded border border-blue-200 bg-white">
               <div className="overflow-x-auto">
                 <div className="min-w-[980px]">
-                  {/* اگر جمع کل‌ها رو اضافه کردی: rows={rows} */}
                   <ReceiptSummaryPanel
                     selectedRow={selectedRow}
                     rows={rows as any}
@@ -260,8 +242,6 @@ export default function HomeMobile() {
             </div>
           )}
         </main>
-
-        {/* bottom toolbar spacer is in pb-24 */}
       </>
     );
   }, [
@@ -276,7 +256,6 @@ export default function HomeMobile() {
 
   return (
     <div dir="rtl" className="min-h-dvh bg-[#e7f0ff]">
-      {/* TOP BAR (برای factors) */}
       {activeTool === "factors" && (
         <div className="sticky top-0 z-50 border-b border-blue-300 bg-gradient-to-b from-[#9bc1fa] from-30% via-[#b7d4ff] via-55% to-[#e7f0ff] to-100%">
           <div className="flex items-center justify-between px-2 py-2">
@@ -339,10 +318,8 @@ export default function HomeMobile() {
         </div>
       )}
 
-      {/* CONTENT */}
       {content}
 
-      {/* BOTTOM TOOLBAR */}
       <div className="fixed inset-x-0 bottom-0 z-50 border-t border-blue-300 bg-gradient-to-t from-[#9bc1fa] from-15% via-[#b7d4ff] via-30% to-[#e7f0ff] to-100%">
         <div className="overflow-x-auto">
           <div className="min-w-[980px]">
@@ -365,7 +342,6 @@ export default function HomeMobile() {
         </div>
       </div>
 
-      {/* DELETE MODAL */}
       <ConfirmModal
         open={deleteOpen}
         title="حذف فاکتور"
@@ -376,7 +352,6 @@ export default function HomeMobile() {
         onCancel={cancelDelete}
       />
 
-      {/* DRAWER */}
       {drawerOpen && (
         <Drawer onClose={() => setDrawerOpen(false)}>
           <div className="space-y-3">

@@ -56,7 +56,7 @@ export default function ListMobile({
           <div className="grid gap-2">
             {lists.map((it) => (
               <div
-                onDoubleClick={() => onOpenList(it.id)}
+                onClick={() => onOpenList(it.id)}
                 key={it.id}
                 className="rounded border border-blue-200 bg-white p-3"
               >

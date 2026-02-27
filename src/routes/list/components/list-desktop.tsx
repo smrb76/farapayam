@@ -1,24 +1,12 @@
 import { useMemo, useState } from "react";
-import { useNavigate } from "react-router";
 import { loadLists } from "../../../utils/inventory-lists";
-
-type Col = { key: string; title: string; width?: number };
-
-const COLS: Col[] = [
-  { key: "row", title: "ردیف", width: 80 },
-  { key: "title", title: "عنوان", width: 220 },
-  { key: "createdAt", title: "تاریخ ایجاد", width: 170 },
-  { key: "warehouseId", title: "انبار", width: 140 },
-  { key: "rowsCount", title: "تعداد ردیف‌ها", width: 120 },
-  { key: "id", title: "شناسه", width: 220 },
-];
+import { COLS } from "../list-route.constant";
 
 export default function ListDesktop({
   onOpenList,
 }: {
   onOpenList: (id: string) => void;
 }) {
-  const navigate = useNavigate();
   const [version] = useState(0);
   const [selectedRow, setSelectedRow] = useState<number | null>(null);
   const [q, setQ] = useState("");
@@ -31,17 +19,15 @@ export default function ListDesktop({
     );
   }, [version]);
 
-  // سرچ در همه فیلدها (به جز خود rows که سنگین/غیر لازم است)
   const filtered = useMemo(() => {
     const query = q.trim().toLowerCase();
     if (!query) return lists;
 
     const toSearchText = (obj: any) => {
-      // همه‌ی keyها (سطح اول) + مشتقات مفید
       const parts: string[] = [];
 
       for (const [k, v] of Object.entries(obj ?? {})) {
-        if (k === "rows") continue; // جلوگیری از سنگین شدن/نویز
+        if (k === "rows") continue;
         if (v == null) continue;
 
         if (
@@ -53,15 +39,11 @@ export default function ListDesktop({
           continue;
         }
 
-        // اگر تاریخ یا آبجکت ساده بود، stringify سبک
         try {
           parts.push(JSON.stringify(v));
-        } catch {
-          // ignore
-        }
+        } catch {}
       }
 
-      // فیلدهای محاسباتی که تو جدول هم نمایش می‌دی
       parts.push(String(obj?.rows?.length ?? 0));
       if (obj?.createdAt) {
         parts.push(new Date(obj.createdAt).toLocaleString("fa-IR"));

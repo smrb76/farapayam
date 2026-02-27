@@ -1,4 +1,5 @@
 import React from "react";
+import { StatusRow } from "../../../../components/shared-ui/counter/counter";
 
 type Props = {
   activeTab?: "factors" | "list";
@@ -64,8 +65,12 @@ export default function ReceiptBottomToolbar({
           />
           <div />
         </div>
-        <div className="mr-2.5 mt-1 h-11 w-full px-3">
-          <div className="flex h-full items-center justify-between relative">
+        <div className="mr-2.5 mt-1 w-full px-3 desk:h-11">
+          <div
+            className="grid h-full items-center gap-2
+                grid-cols-2
+                desk:grid-cols-[auto,1fr,auto] desk:relative"
+          >
             <div className="flex items-center gap-2">
               <MiniBtn
                 title="تنظیم"
@@ -89,7 +94,11 @@ export default function ReceiptBottomToolbar({
               />
             </div>
 
-            <div className="flex items-center gap-2 absolute right-1/4">
+            <div
+              className="flex items-center justify-center gap-2
+    col-span-2
+    desk:col-span-1 desk:absolute right-1/4"
+            >
               <RoundIconBtn title="اول" onClick={onFirst} disabled={!canFirst}>
                 <NavIcons.First />
               </RoundIconBtn>
@@ -112,7 +121,7 @@ export default function ReceiptBottomToolbar({
               </RoundIconBtn>
             </div>
 
-            <div className="ml-9 flex items-center gap-2">
+            <div className="flex items-center justify-end gap-2 desk:ml-9">
               <ActionBtn
                 title="تایید"
                 onClick={onConfirm}
@@ -132,9 +141,8 @@ export default function ReceiptBottomToolbar({
             </div>
           </div>
         </div>
-        <div className="mt-3.5 flex flex-row items-center justify-between">
-          <p>وضعیت فرم: نمایش</p>
-          <p> ۱۴۰۴/۱۲/۰۷</p>
+        <div className="text-xs mt-2 flex flex-row items-center px-2 justify-between desk:mt-3.5 pt-2 desk:pt-0 w-full">
+          <StatusRow />
         </div>
       </div>
     </div>
