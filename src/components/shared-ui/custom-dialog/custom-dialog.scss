@@ -1,0 +1,12 @@
+// @use './../../../public/styles/colors.scss' as *;
+
+.dialog-header {
+  // background: $club_blue_light;
+  color: white;
+  border-radius: 0 0 16px 16px;
+  width: 140px;
+  text-align: center;
+  margin: 0 auto 8px;
+  padding: 6px;
+  font-weight: bold;
+}
