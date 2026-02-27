@@ -1,7 +1,9 @@
-import ProductPickerModal from '../product-picker-modal/product-picker-modal';
-import { type Product, WAREHOUSES } from '../mock-warehouses/mock-warehouses';
-import { useState, useMemo, useEffect } from 'react';
-import GiverPickerModal from '../giver-picker-modal/giver-picker-modal';
+import ProductPickerModal from "../product-picker-modal/product-picker-modal";
+import { type Product, WAREHOUSES } from "../../../../utils/mock-warehouses";
+import { useState, useMemo, useEffect } from "react";
+import GiverPickerModal from "../giver-picker-modal/giver-picker-modal";
+
+export type Giver = { id: string; name: string };
 
 type Col = {
   key: string;
@@ -11,39 +13,39 @@ type Col = {
 };
 
 const COLS: Col[] = [
-  { key: 'row', title: 'ردیف', width: 110, readOnly: true },
-  { key: 'code', title: 'کد کالا', width: 120 },
-  { key: 'serial', title: 'شماره فنی', width: 120 },
-  { key: 'p1', title: 'ویژگی 1', width: 120 },
-  { key: 'p2', title: 'ویژگی 2', width: 120 },
-  { key: 'p3', title: 'ویژگی 3', width: 120 },
-  { key: 'p4', title: 'ویژگی 4', width: 120 },
-  { key: 'name', title: 'نام کالا', width: 130 },
-  { key: 'en', title: 'نام انگلیسی کالا', width: 130 },
-  { key: 'unit', title: 'تحویل دهنده کالا', width: 120 },
-  { key: 'unitName', title: 'نام تحویل دهنده ', width: 120 },
-  { key: 'qty', title: 'مقدار', width: 120 },
-  { key: 'price', title: 'بهای واحد', width: 120 },
-  { key: 'total', title: 'مبلغ کل', width: 130, readOnly: true },
+  { key: "row", title: "ردیف", width: 110, readOnly: true },
+  { key: "code", title: "کد کالا", width: 120 },
+  { key: "serial", title: "شماره فنی", width: 120 },
+  { key: "p1", title: "ویژگی 1", width: 120 },
+  { key: "p2", title: "ویژگی 2", width: 120 },
+  { key: "p3", title: "ویژگی 3", width: 120 },
+  { key: "p4", title: "ویژگی 4", width: 120 },
+  { key: "name", title: "نام کالا", width: 130 },
+  { key: "en", title: "نام انگلیسی کالا", width: 130 },
+  { key: "unit", title: "تحویل دهنده کالا", width: 120 },
+  { key: "unitName", title: "نام تحویل دهنده ", width: 120 },
+  { key: "qty", title: "مقدار", width: 120 },
+  { key: "price", title: "بهای واحد", width: 120 },
+  { key: "total", title: "مبلغ کل", width: 130, readOnly: true },
 ];
 
 type Row = Record<string, string | number>;
 
 const MOCK_ROWS: Row[] = Array.from({ length: 9 }).map((_, i) => ({
   row: i + 1,
-  code: '',
-  serial: '',
-  p1: '',
-  p2: '',
-  p3: '',
-  p4: '',
-  name: '',
-  en: '',
-  unit: '',
-  unitName: '',
-  qty: '',
-  price: '',
-  total: '',
+  code: "",
+  serial: "",
+  p1: "",
+  p2: "",
+  p3: "",
+  p4: "",
+  name: "",
+  en: "",
+  unit: "",
+  unitName: "",
+  qty: "",
+  price: "",
+  total: "",
 }));
 
 export default function ReceiptScrollableTable({
@@ -78,12 +80,14 @@ export default function ReceiptScrollableTable({
 
   const setCell = (rowIndex: number, key: string, value: string) => {
     setData((prev) => {
-      const next = prev.map((r, i) => (i === rowIndex ? { ...r, [key]: value } : r));
+      const next = prev.map((r, i) =>
+        i === rowIndex ? { ...r, [key]: value } : r,
+      );
 
-      if (key === 'qty' || key === 'price') {
+      if (key === "qty" || key === "price") {
         const r = next[rowIndex];
-        const qty = Number(String(r.qty ?? '').replace(/,/g, '')) || 0;
-        const price = Number(String(r.price ?? '').replace(/,/g, '')) || 0;
+        const qty = Number(String(r.qty ?? "").replace(/,/g, "")) || 0;
+        const price = Number(String(r.price ?? "").replace(/,/g, "")) || 0;
         next[rowIndex] = { ...r, total: qty * price };
       }
 
@@ -120,8 +124,12 @@ export default function ReceiptScrollableTable({
     setPickerOpen(false);
     setPickerRowIndex(null);
   };
-  const GIVERS = ['دهنده ۱', 'دهنده ۲', 'دهنده ۳', 'دهنده ۴'];
-
+  const GIVERS: Giver[] = [
+    { id: "G1", name: "دهنده ۱" },
+    { id: "G2", name: "دهنده ۲" },
+    { id: "G3", name: "دهنده ۳" },
+    { id: "G4", name: "دهنده ۴" },
+  ];
   const [giverOpen, setGiverOpen] = useState(false);
   const [giverRowIndex, setGiverRowIndex] = useState<number | null>(null);
 
@@ -130,11 +138,16 @@ export default function ReceiptScrollableTable({
     setGiverOpen(true);
   };
 
-  const applyGiverToRow = (giver: string) => {
+  const applyGiverToRow = (giver: Giver) => {
     if (giverRowIndex == null) return;
 
     setData((prev) => {
-      const next = prev.map((r, i) => (i === giverRowIndex ? { ...r, unit: giver } : r));
+      const next = prev.map((r, i) =>
+        i === giverRowIndex
+          ? { ...r, unit: giver.id, unitName: giver.name }
+          : r,
+      );
+
       onRowsChange?.(next);
       if (selectedRow === giverRowIndex) onRowSelect?.(next[giverRowIndex]);
       return next;
@@ -153,7 +166,10 @@ export default function ReceiptScrollableTable({
               <colgroup>
                 <col style={{ width: 10 }} />
                 {COLS.map((c) => (
-                  <col key={c.key} style={c.width ? { width: c.width } : undefined} />
+                  <col
+                    key={c.key}
+                    style={c.width ? { width: c.width } : undefined}
+                  />
                 ))}
               </colgroup>
 
@@ -180,7 +196,11 @@ export default function ReceiptScrollableTable({
                     <tr
                       key={String(r.row ?? idx)}
                       className={
-                        isSelected ? 'bg-blue-50' : idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'
+                        isSelected
+                          ? "bg-blue-50"
+                          : idx % 2 === 0
+                            ? "bg-white"
+                            : "bg-slate-50/50"
                       }
                     >
                       <td className="border-b border-l border-slate-200 p-0">
@@ -191,11 +211,11 @@ export default function ReceiptScrollableTable({
                             onRowSelect?.(r);
                           }}
                           className={[
-                            'block h-full w-full',
-                            'min-h-5',
-                            isSelected ? 'bg-blue-600' : 'bg-[#4f78b8]',
-                            'hover:bg-blue-500',
-                          ].join(' ')}
+                            "block h-full w-full",
+                            "min-h-5",
+                            isSelected ? "bg-blue-600" : "bg-[#4f78b8]",
+                            "hover:bg-blue-500",
+                          ].join(" ")}
                           aria-label="Select row"
                         />
                       </td>
@@ -203,18 +223,31 @@ export default function ReceiptScrollableTable({
                       {COLS.map((c) => {
                         const isRO = !!colMap.get(c.key)?.readOnly;
                         return (
-                          <td key={c.key} className="border-b border-l border-slate-200 p-0">
+                          <td
+                            key={c.key}
+                            className="border-b border-l border-slate-200 p-0"
+                          >
                             <input
-                              className={cellInputCls + (isRO ? ' text-slate-600' : '')}
-                              value={String(r[c.key] ?? '')}
+                              className={
+                                cellInputCls + (isRO ? " text-slate-600" : "")
+                              }
+                              value={String(r[c.key] ?? "")}
                               readOnly={isRO}
                               onClick={() => {
-                                if (c.key === 'code' || c.key === 'name') openPickerForRow(idx);
-                                if (c.key === 'unit') openGiverPickerForRow(idx);
+                                if (c.key === "code" || c.key === "name")
+                                  openPickerForRow(idx);
+
+                                if (c.key === "unit" || c.key === "unitName")
+                                  openGiverPickerForRow(idx);
                               }}
                               onChange={(e) => {
                                 if (isRO) return;
-                                if (c.key === 'code' || c.key === 'name' || c.key === 'unit')
+                                if (
+                                  c.key === "code" ||
+                                  c.key === "name" ||
+                                  c.key === "unit" ||
+                                  c.key === "unitName"
+                                )
                                   return;
                                 setCell(idx, c.key, e.target.value);
                               }}
@@ -255,5 +288,5 @@ export default function ReceiptScrollableTable({
 }
 
 const cellInputCls =
-  'h-5 w-full bg-transparent px-2 text-slate-800 outline-none truncate ' +
-  'focus:bg-white focus:shadow-[inset_0_0_0_1px_rgba(59,130,246,0.5)]';
+  "h-5 w-full bg-transparent px-2 text-slate-800 outline-none truncate " +
+  "focus:bg-white focus:shadow-[inset_0_0_0_1px_rgba(59,130,246,0.5)]";

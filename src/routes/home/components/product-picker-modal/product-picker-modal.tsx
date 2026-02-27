@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react';
-import { Product } from '../mock-warehouses/mock-warehouses';
+import { useMemo, useState } from "react";
+import { Product } from "../../../../utils/mock-warehouses";
 
 type Props = {
   open: boolean;
@@ -11,18 +11,20 @@ type Props = {
 
 export default function ProductPickerModal({
   open,
-  title = 'انتخاب کالا',
+  title = "انتخاب کالا",
   items,
   onClose,
   onSelect,
 }: Props) {
-  const [q, setQ] = useState('');
+  const [q, setQ] = useState("");
 
   const filtered = useMemo(() => {
     const s = q.trim();
     if (!s) return items;
     return items.filter((x) =>
-      (x.nameFa + ' ' + x.nameEn + ' ' + x.code).toLowerCase().includes(s.toLowerCase()),
+      (x.nameFa + " " + x.nameEn + " " + x.code)
+        .toLowerCase()
+        .includes(s.toLowerCase()),
     );
   }, [items, q]);
 
@@ -30,8 +32,12 @@ export default function ProductPickerModal({
 
   return (
     <div className="fixed inset-0 z-[9999]">
-      <button className="absolute inset-0 bg-black/30" onClick={onClose} aria-label="close" />
-      <div className="absolute left-1/2 top-24 w-[520px] -translate-x-1/2 rounded border border-slate-300 bg-white shadow-lg">
+      <button
+        className="absolute inset-0 bg-black/30"
+        onClick={onClose}
+        aria-label="close"
+      />
+      <div className="absolute left-1/2 top-24 w-4/5 -translate-x-1/2 rounded border border-slate-300 bg-white shadow-lg">
         <div className="flex items-center justify-between border-b border-slate-200 px-3 py-2 text-[13px]">
           <span className="font-semibold text-slate-800">{title}</span>
           <button
@@ -62,12 +68,16 @@ export default function ProductPickerModal({
                   <div className="truncate text-slate-800">{p.nameFa}</div>
                   <div className="truncate text-slate-500">{p.nameEn}</div>
                 </div>
-                <div className="shrink-0 font-mono text-slate-700">{p.code}</div>
+                <div className="shrink-0 font-mono text-slate-700">
+                  {p.code}
+                </div>
               </button>
             ))}
 
             {filtered.length === 0 && (
-              <div className="px-3 py-4 text-center text-[12px] text-slate-500">موردی پیدا نشد</div>
+              <div className="px-3 py-4 text-center text-[12px] text-slate-500">
+                موردی پیدا نشد
+              </div>
             )}
           </div>
         </div>

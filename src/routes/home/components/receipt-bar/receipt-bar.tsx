@@ -1,22 +1,25 @@
-import { useMemo, useRef, useState } from 'react';
-import JalaliDatePickerField from '../../../../components/jalali-date-picker-field';
-import { WAREHOUSES } from '../mock-warehouses/mock-warehouses';
-const toFaDigits = (s: string) => s.replace(/\d/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[Number(d)]);
+import { useMemo, useRef, useState } from "react";
+import JalaliDatePickerField from "../../../../components/jalali-date-picker-field";
+import { WAREHOUSES } from "../../../../utils/mock-warehouses";
+import clsx from "clsx";
+const toFaDigits = (s: string) =>
+  s.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[Number(d)]);
 type Props = {
   warehouseId: string;
   onWarehouseChange: (id: string) => void;
 };
 export default function ReceiptBar({ warehouseId, onWarehouseChange }: Props) {
   const warehouseName = useMemo(
-    () => WAREHOUSES.find((w) => w.id === warehouseId)?.name ?? '',
+    () => WAREHOUSES.find((w) => w.id === warehouseId)?.name ?? "",
     [warehouseId],
   );
-  const [receiptDate, setReceiptDate] = useState('');
-  const [receiptTime, setReceiptTime] = useState(':');
+  const [receiptDate, setReceiptDate] = useState("");
+  const [receiptTime, setReceiptTime] = useState(":");
   const timeRef = useRef<HTMLInputElement | null>(null);
+  const [settled, setSettled] = useState(false);
 
   return (
-    <div dir="rtl" className="w-full bg-[#ddecff] py-1 pr-1">
+    <div dir="rtl" className="w-full bg-[#ddecff] py-2 pr-1">
       <div className="flex flex-row gap-0.5 text-[13px]">
         <div className="flex flex-col items-end justify-center gap-0.5">
           <Field className="col-span-6" label="انـــبـــار">
@@ -47,9 +50,18 @@ export default function ReceiptBar({ warehouseId, onWarehouseChange }: Props) {
           </Field>
         </div>
         <div className="flex flex-col items-start justify-around gap-0.5">
-          <img src="static/icons/Download-Square--Streamline-Sharp.svg" className="h-5" />
-          <input type="checkbox" className="h-4 w-4 rounded-none accent-blue-600" />
-          <img src="static/icons/Download-Square--Streamline-Sharp.svg" className="h-5" />
+          <img
+            src="static/icons/Download-Square--Streamline-Sharp.svg"
+            className="h-5"
+          />
+          <input
+            type="checkbox"
+            className="h-4 w-4 rounded-none accent-blue-600"
+          />
+          <img
+            src="static/icons/Download-Square--Streamline-Sharp.svg"
+            className="h-5"
+          />
           <span
             className="inline-block h-5 w-5 bg-gray-400"
             style={{
@@ -76,8 +88,16 @@ export default function ReceiptBar({ warehouseId, onWarehouseChange }: Props) {
               }}
             />
           </div>
-          <input className="h-5 w-52 border-2 border-gray-400 bg-transparent" value="" readOnly />
-          <input className="h-5 w-52 border-2 border-gray-400 bg-transparent" value="" readOnly />
+          <input
+            className="h-5 w-52 border-2 border-gray-400 bg-transparent"
+            value=""
+            readOnly
+          />
+          <input
+            className="h-5 w-52 border-2 border-gray-400 bg-transparent"
+            value=""
+            readOnly
+          />
         </div>
         <div className="flex flex-col items-end justify-center gap-0.5">
           <Field className="col-span-5" label="نــوع رســـیـد">
@@ -88,14 +108,47 @@ export default function ReceiptBar({ warehouseId, onWarehouseChange }: Props) {
             </select>
           </Field>
           <Field className="col-span-3" label="شـــماره ارجـاع">
-            <input className="h-5 w-[176px] border border-gray-600" placeholder="1530" />
+            <input
+              className="h-5 w-[176px] border border-gray-600"
+              placeholder="1530"
+            />
           </Field>
           <Field className="col-span-4" label="شماره درخواست">
-            <input className="h-5 w-[176px] border border-gray-600" placeholder="" />
+            <input
+              className="h-5 w-[176px] border border-gray-600"
+              placeholder=""
+            />
           </Field>
           <div className="flex items-center gap-2">
-            <span className="text-slate-600">تسویه وجه:</span>
-            <div className="h-4 w-8 rounded border border-slate-300 bg-blue-700" />
+            <span className="text-blue-900">تسویه وجه:</span>
+
+            <button
+              type="button"
+              role="switch"
+              aria-checked={settled}
+              onClick={() => setSettled((v) => !v)}
+              className={clsx(
+                "relative h-5 w-10 select-none",
+                "border border-[#7f7f7f] bg-[#f5f5f5]",
+                "shadow-[inset_0_1px_0_rgba(255,255,255,0.9),inset_0_-1px_0_rgba(0,0,0,0.15)]",
+                "focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2",
+              )}
+            >
+              {/* inner frame */}
+              <span className="absolute inset-[2px] border border-[#bdbdbd] bg-white" />
+
+              {/* half block (blue) */}
+              <span
+                className={clsx(
+                  "absolute top-[3px] bottom-[3px] w-1/2",
+                  "border border-[#2b3f9c]",
+                  "shadow-[inset_0_1px_0_rgba(255,255,255,0.25)]",
+                  settled
+                    ? "right-[3px] bg-[#0b2ea6]"
+                    : "left-[3px] bg-[#a6200b]",
+                )}
+              />
+            </button>
 
             <Field className="col-span-5" label="نقد">
               <select className={selectCls}>
@@ -127,7 +180,7 @@ export default function ReceiptBar({ warehouseId, onWarehouseChange }: Props) {
         </div>
         <div className="relative mt-0.5 flex h-5 items-center justify-center border border-gray-600 bg-white px-1 py-2">
           <span className="mr-1 text-[12px] text-slate-800">
-            {receiptTime ? toFaDigits(receiptTime) : ''}
+            {receiptTime ? toFaDigits(receiptTime) : ""}
           </span>
           <input
             ref={timeRef}
@@ -145,11 +198,17 @@ export default function ReceiptBar({ warehouseId, onWarehouseChange }: Props) {
         </div>
         <div className="flex flex-col items-end justify-center gap-0.5">
           <Field className="col-span-4" label="شماره فـاکـتـور">
-            <input className="h-5 w-[123px] border border-gray-600" placeholder="" />
+            <input
+              className="h-5 w-[123px] border border-gray-600"
+              placeholder=""
+            />
           </Field>
 
           <Field className="col-span-4" label="محل اقدام خرید">
-            <input className="h-5 w-[123px] border border-gray-600" placeholder="" />
+            <input
+              className="h-5 w-[123px] border border-gray-600"
+              placeholder=""
+            />
           </Field>
 
           <Field className="col-span-5" label="ش کنترل کیفی">
@@ -190,9 +249,18 @@ export default function ReceiptBar({ warehouseId, onWarehouseChange }: Props) {
                 mask: `url("static/icons/Triangle-Down-Square--Streamline-Sharp-Streamline-Material-Free.svg") no-repeat center / contain`,
               }}
             />
-            <input className="w-[293px] border border-gray-600" placeholder="" />
-            <img src="static/icons/Download-Square--Streamline-Sharp.svg" className="h-6" />
-            <img src="static/icons/Download-Square--Streamline-Sharp.svg" className="h-6" />
+            <input
+              className="w-[293px] border border-gray-600"
+              placeholder=""
+            />
+            <img
+              src="static/icons/Download-Square--Streamline-Sharp.svg"
+              className="h-6"
+            />
+            <img
+              src="static/icons/Download-Square--Streamline-Sharp.svg"
+              className="h-6"
+            />
           </div>
         </Field>
         <div className="mr-8 flex flex-row justify-center">
@@ -202,7 +270,11 @@ export default function ReceiptBar({ warehouseId, onWarehouseChange }: Props) {
               <option>رسید مستقیم</option>
             </select>
           </Field>
-          <input className="h-5 w-6 border border-gray-500 bg-white" value="" readOnly />
+          <input
+            className="h-5 w-6 border border-gray-500 bg-white"
+            value=""
+            readOnly
+          />
           <p>روز</p>
         </div>
       </div>
@@ -213,7 +285,7 @@ export default function ReceiptBar({ warehouseId, onWarehouseChange }: Props) {
 function Field({
   label,
   children,
-  className = '',
+  className = "",
 }: {
   label: string;
   children: React.ReactNode;
@@ -228,6 +300,6 @@ function Field({
 }
 
 const inputCls =
-  'h-5 w-24  border border-gray-600 bg-white px-2 text-black placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-200';
+  "h-5 w-24  border border-gray-600 bg-white px-2 text-black placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-200";
 const selectCls =
-  'h-5 w-[123px]  border border-gray-600 bg-white px-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-200';
+  "h-5 w-[123px]  border border-gray-600 bg-white px-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-200";

@@ -1,4 +1,4 @@
-@import url('./../public/fonts/iran-sans5/css/fontiran.css');
+@import url("./../public/fonts/iran-sans5/css/fontiran.css");
 
 @tailwind base;
 @tailwind components;
@@ -15,7 +15,6 @@
   --colorLight: #43474e;
 }
 
-/* Step 2: Globally override how h-screen behaves */
 @supports (height: 100dvh) {
   .h-screen {
     height: calc(var(--vh, 1vh) * 100) !important;
@@ -27,13 +26,9 @@
 
 html,
 body {
-  /* @apply bg-white dark:bg-gray-950; */
   @apply bg-white;
   height: 100%;
   margin: 0;
-  // @media (prefers-color-scheme: dark) {
-  //   color-scheme: dark;
-  // }
 }
 
 * {
@@ -48,146 +43,9 @@ body {
   background: white;
 }
 
-.page-main-container {
-  display: flex;
-  flex-direction: column;
-  padding: 16px;
-  gap: 12px;
-  background: var(--spaceGray);
-}
-
 a {
   text-decoration: none;
   color: inherit;
-}
-
-.container {
-  display: flex;
-  box-shadow: 0 0 2px #0000001f;
-  background: white;
-  border-radius: 15px;
-  padding: 16px;
-  box-sizing: border-box;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  height: auto;
-}
-
-.each-home-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  border-radius: 16px;
-  padding: 16px;
-  box-sizing: border-box;
-  box-shadow: 0 0 2px #0000001f;
-  background: white;
-}
-
-.ellipsis-text {
-  line-height: 19px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.blur-img-overlay {
-  position: absolute;
-  filter: blur(2px);
-  top: 0;
-  right: 0;
-  z-index: 10;
-  height: 100%;
-  width: 100%;
-  border-radius: 16px;
-  object-fit: cover;
-}
-
-.name-limit {
-  max-height: 38px;
-  line-height: 19px;
-  overflow: hidden;
-}
-
-.p-dialog-content {
-  color: var(--primaryTextColor);
-  border-radius: 20px;
-  font-size: 14px;
-  padding: 16px;
-  overflow: unset;
-
-  &:not(.p-confirm-dialog .p-dialog-content) {
-    height: 100%;
-    background: var(--spaceGray);
-  }
-}
-
-.p-dialog-header {
-  height: 40px;
-  background: var(--colorSecondary);
-  color: white;
-  padding: 16px;
-
-  .p-dialog-header-icon {
-    color: white;
-  }
-
-  .p-dialog-title {
-    font-size: 18px;
-    line-height: 19px;
-  }
-}
-
-// .p-confirm-dialog-reject {
-//   background: $rejectButtonColor;
-//   color: white;
-// }
-
-.p-button {
-  height: 40px;
-  padding: 12px;
-}
-
-.p-toast-message {
-  margin: auto;
-
-  .p-toast-message-content {
-    display: flex;
-    gap: 12px;
-  }
-}
-
-// .general-spec {
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   padding: 4px;
-//   gap: 4px;
-//   border-radius: 50px;
-//   font-weight: 500;
-//   color: $primaryTextColor;
-
-//   .img {
-//     width: 20px;
-//     height: 20px;
-//   }
-// }
-
-.cover-container {
-  &.default-cover {
-    background: white;
-    border-radius: 8px;
-    padding: 3px;
-  }
-
-  .club-cover {
-    width: 100%;
-    height: 100%;
-    border-radius: 8px;
-  }
 }
 
 .no-spinner::-webkit-outer-spin-button,

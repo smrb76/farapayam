@@ -7,7 +7,8 @@ export default function Home() {
       <div className="desk:hidden">
         <HomeMobile />
       </div>
-      <div className="desk:block hidden">
+
+      <div className="hidden desk:block">
         <HomeDesktop />
       </div>
     </>
