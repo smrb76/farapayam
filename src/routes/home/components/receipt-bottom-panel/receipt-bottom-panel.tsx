@@ -1,9 +1,10 @@
 import React from "react";
 import { StatusRow } from "../../../../components/shared-ui/counter/counter";
+import { ToolKey } from "../../home.model";
 
 type Props = {
-  activeTab?: "factors" | "list";
-  onTabChange?: (tab: "factors" | "list") => void;
+  activeTab?: ToolKey;
+  onTabChange?: (tab: ToolKey) => void;
   onCancel?: () => void;
   onConfirm?: () => void;
 
@@ -255,14 +256,12 @@ function MiniBtn({
   );
 }
 
-type TabKey = "factors" | "list";
-
 export function ReceiptMiniTabs({
   activeTab,
   onChange,
 }: {
-  activeTab: TabKey;
-  onChange?: (t: TabKey) => void;
+  activeTab: ToolKey;
+  onChange?: (t: ToolKey) => void;
 }) {
   return (
     <div dir="rtl" className="px-3 pt-2">

@@ -7,7 +7,7 @@ import { loadLists, saveLists } from "../../../../utils/inventory-lists";
 
 export function useHomeDesktopController() {
   const [activeTool, setActiveTool] = useState<ToolKey>("factors");
-  const activeTab = activeTool === "list" ? "list" : "factors";
+  const activeTab: ToolKey = activeTool === "list" ? "list" : "factors";
 
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [resetKey, setResetKey] = useState(0);
